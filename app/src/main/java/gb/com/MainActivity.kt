@@ -2,29 +2,29 @@ package gb.com
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import gb.com.databinding.ActivityMainBinding
-import gb.com.presenter.MainPresenter
+import gb.com.presenter.MainPresenterImpl
 import gb.com.ui.MainView
 
 class MainActivity : AppCompatActivity(), MainView {
 
     private var vb: ActivityMainBinding? = null
-    val presenter = MainPresenter(this)
+    private val presenter = MainPresenterImpl(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
 
-       val listener = View.OnClickListener {
-           presenter.counterClick(it.id)
-       }
-
-        vb?.btnCounterOne?.setOnClickListener(listener)
-        vb?.btnCounterTwo?.setOnClickListener(listener)
-        vb?.btnCounterThree?.setOnClickListener(listener)
-
+        vb?.btnCounterOne?.setOnClickListener{
+            presenter.onCounterClick(0)
+        }
+        vb?.btnCounterTwo?.setOnClickListener {
+            presenter.onCounterClick(1)
+        }
+        vb?.btnCounterThree?.setOnClickListener {
+            presenter.onCounterClick(2)
+        }
     }
 
     override fun setButtonText(index: Int, text: String) {
@@ -39,5 +39,4 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onDestroy()
         vb = null
     }
-
 }
